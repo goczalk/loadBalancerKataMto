@@ -99,11 +99,11 @@ public class ServerLoadBalancerTest {
         assertThat(server2, hasLoadPercentageOf(66.66d));
 	}
 
-	private void balance(Server[] servers, Vm[] vms) {
+	public static void balance(Server[] servers, Vm[] vms) {
 		new ServerLoadBalancer().balance(servers, vms);
 	}
 
-	private Vm[] aListOfVmsWith(Vm... vms) {
+	public static Vm[] aListOfVmsWith(Vm... vms) {
 		return vms;
 	}
 
@@ -111,11 +111,11 @@ public class ServerLoadBalancerTest {
 		return new Vm[0];
 	}
 
-	private Server[] aListOfServersWith(Server... servers) {
+	public static Server[] aListOfServersWith(Server... servers) {
 		return servers;
 	}
 
-	private <T> T a(Builder<T> builder) {
+	public static <T> T a(Builder<T> builder) {
 		return builder.build();
 	}
 }
