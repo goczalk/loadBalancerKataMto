@@ -6,15 +6,39 @@ import static edu.iis.mto.serverloadbalancer.VmBuilder.vm;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+@RunWith(Parameterized.class)
 public class ServerLoadBalancerParametrizedTest extends ServerLoadBalancerBaseTest{
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data(){
+        return Arrays.asList(new Object[][]{
+            {1,1,100.0d}, {2,1,50.0d}, {4,1,25.0d}, {100,1,1.0d}
+        });
+    }
+
+    @Parameterized.Parameter
+    public int serverCapacity;
+
+    @Parameterized.Parameter(1)
+    public int vmSize;
+
+    @Parameterized.Parameter(2)
+    public double loadPercentage;
+
+
 	@Test
-	public void balancingOneServerWithOneSlotCapacity_andOneSlotVm_fillsTheServerWithTheVm() {
-		Server theServer = a(server().withCapacity(1));
-		Vm theVm = a(vm().ofSize(1));
+	public void balancingOneServerWithCertainCapacity_andCertainSlotVm_fillsTheServerWithTheVm() {
+		Server theServer = a(server().withCapacity(serverCapacity));
+		Vm theVm = a(vm().ofSize(vmSize));
 		balance(aListOfServersWith(theServer), aListOfVmsWith(theVm));
 
-		assertThat(theServer, hasLoadPercentageOf(100.0d));
+		assertThat(theServer, hasLoadPercentageOf(loadPercentage));
 		assertThat("the server should contain vm", theServer.contains(theVm));
 	}
 	
